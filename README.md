@@ -1,70 +1,347 @@
-# Getting Started with Create React App
+# 🤖 Robot Hallway MDP - Interactive Reinforcement Learning Simulator
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An interactive visualization tool for understanding Markov Decision Processes (MDPs) through a simple robot navigation problem. This project demonstrates both the theoretical algorithms and practical simulation of reinforcement learning concepts.
 
-## Available Scripts
+---
+<img width="1887" height="1053" alt="Image" src="https://github.com/user-attachments/assets/0cf2aa54-48e4-4581-965b-74e0ac969b3e" />
 
-In the project directory, you can run:
+<img width="1894" height="1079" alt="Image" src="https://github.com/user-attachments/assets/c7069811-8ef0-4ae8-935e-d85557a43616" />
 
-### `npm start`
+---
+## 📋 Table of Contents
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- [Overview](#overview)
+- [Problem Description](#problem-description)
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [MDP Formulation](#mdp-formulation)
+- [Algorithms](#algorithms)
+- [Project Structure](#project-structure)
+- [Scenarios](#scenarios)
+- [Technologies](#technologies)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🎯 Overview
 
-### `npm test`
+This project implements a **Markov Decision Process (MDP)** solver with an interactive React-based visualization. A robot navigates a 1D hallway with 4 positions, aiming to reach a charging station while dealing with uncertain movements and various environmental challenges.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+The project includes:
+- ✅ **Python implementation** (Jupyter Notebook) - Core MDP algorithms
+- ✅ **React web application** - Interactive visualization and simulation
+- ✅ **Multiple scenarios** - Different reward structures and obstacles
+- ✅ **Two algorithms** - Value Iteration and Policy Iteration
 
-### `npm run build`
+## 🚀 Problem Description
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Scenario
+A robot moves along a hallway with 4 positions: `[0, 1, 2, 3]`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Goal:** Reach the charging station at position 3
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### MDP Components
 
-### `npm run eject`
+#### States (S)
+The robot's position: `S = {0, 1, 2, 3}`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+#### Actions (A)
+At each step, the robot can choose:
+- `LEFT` - Attempt to move left
+- `RIGHT` - Attempt to move right
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### Transition Probabilities (T)
+Motion is **stochastic** (noisy):
+- **Intended action succeeds:** 80% probability
+- **Robot stays in place:** 20% probability (slips)
+- Boundaries are enforced (cannot move outside [0,3])
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+#### Rewards (R)
+- **Reaching charging station (state 3):** +10
+- **Every other move:** -1 (step cost)
+- **Terminal state:** State 3 (episode ends)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+#### Discount Factor (γ)
+- Default: 0.9 (adjustable in web app)
+- Balances immediate vs. future rewards
 
-## Learn More
+## ✨ Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Interactive Web Application
+- 🎮 **Real-time simulation** - Watch the robot navigate using the optimal policy
+- 🎨 **Visual feedback** - Color-coded states (goals, hazards, rewards)
+- 📊 **Algorithm comparison** - Switch between Value Iteration and Policy Iteration
+- ⚙️ **Configurable parameters** - Adjust discount factor and animation speed
+- 📈 **Performance metrics** - Track steps, rewards, and stuck instances
+- 🎯 **Multiple scenarios** - 6 pre-built scenarios with different challenges
+- 📝 **Movement history** - Detailed log of robot's actions and outcomes
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Python Implementation
+- 🐍 **Clean NumPy implementation** - Easy to understand and modify
+- 📓 **Jupyter Notebook** - Step-by-step explanation with outputs
+- 🔄 **Simulation testing** - Verify policy from different starting positions
+- 📊 **Value convergence** - Visualization of learning process
 
-### Code Splitting
+## 📦 Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Prerequisites
+- Node.js (v14 or higher)
+- npm or yarn
+- Python 3.7+ (for notebook)
 
-### Analyzing the Bundle Size
+### React Application Setup
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. **Clone the repository**
+```bash
+git clone https://github.com/yourusername/robot-hallway-mdp.git
+cd robot-hallway-mdp
+```
 
-### Making a Progressive Web App
+2. **Install dependencies**
+```bash
+npm install
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+3. **Install Tailwind CSS**
+```bash
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+```
 
-### Advanced Configuration
+4. **Configure Tailwind**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+Create/edit `tailwind.config.js`:
+```javascript
+module.exports = {
+  content: ["./src/**/*.{js,jsx,ts,tsx}"],
+  theme: { extend: {} },
+  plugins: [],
+}
+```
 
-### Deployment
+5. **Update CSS**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+In `src/index.css`:
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
 
-### `npm run build` fails to minify
+6. **Start the application**
+```bash
+npm start
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The app will open at `http://localhost:3000`
+
+### Python Notebook Setup
+
+1. **Install required packages**
+```bash
+pip install numpy jupyter
+```
+
+2. **Launch Jupyter**
+```bash
+jupyter notebook MDP.ipynb
+```
+
+## 🎮 Usage
+
+### Web Application
+
+1. **Select a scenario** from the scenario selector
+2. **Configure settings** (optional):
+   - Adjust discount factor (γ)
+   - Change animation speed
+   - Switch between algorithms
+3. **Choose starting position** (0, 1, or 2)
+4. **Click "Start"** to watch the robot navigate
+5. **Observe**:
+   - Optimal policy (π*) for each state
+   - Q-values (state-action values)
+   - Real-time statistics
+   - Movement history
+
+### Python Implementation
+
+Run cells sequentially in the Jupyter notebook:
+1. **Define MDP components** (states, actions, transitions, rewards)
+2. **Run Value Iteration** algorithm
+3. **Extract optimal policy**
+4. **Simulate** robot behavior from different starting positions
+
+## 🧮 MDP Formulation
+
+### Mathematical Representation
+
+**State Value Function:**
+```
+V(s) = max_a Σ P(s'|s,a)[R(s,a,s') + γV(s')]
+```
+
+**Optimal Policy:**
+```
+π*(s) = argmax_a Σ P(s'|s,a)[R(s,a,s') + γV(s')]
+```
+
+**Q-Value (Action-Value Function):**
+```
+Q(s,a) = Σ P(s'|s,a)[R(s,a,s') + γV(s')]
+```
+
+### Example Results
+
+**Optimal Values (γ=0.9):**
+```
+State 0: V(0) = 5.04
+State 1: V(1) = 7.13
+State 2: V(2) = 9.51
+State 3: V(3) = 0.00 (terminal)
+```
+
+**Optimal Policy:**
+```
+State 0: RIGHT
+State 1: RIGHT
+State 2: RIGHT
+State 3: TERMINAL
+```
+
+## 🔄 Algorithms
+
+### 1. Value Iteration
+
+**Bellman Optimality Update:**
+```python
+V(s) ← max_a Σ P(s'|s,a)[R(s,a,s') + γV(s')]
+```
+
+**Convergence:** When `max|V_new(s) - V_old(s)| < θ`
+
+**Complexity:** O(|S|²|A|) per iteration
+
+### 2. Policy Iteration
+
+**Two phases:**
+1. **Policy Evaluation:** Compute V^π for current policy π
+2. **Policy Improvement:** Update π to be greedy w.r.t. V^π
+
+**Convergence:** Typically faster than Value Iteration in practice
+
+## 📂 Project Structure
+
+```
+robot-hallway-mdp/
+├── src/
+│   ├── App.js                 # Main React component
+│   ├── index.js               # Entry point
+│   └── index.css              # Tailwind imports
+├── public/
+│   └── index.html
+├── MDP.ipynb                  # Python implementation
+├── package.json
+├── tailwind.config.js
+├── README.md
+└── .gitignore
+```
+
+## 🎯 Scenarios
+
+### 1. Goal on Right ⚡
+- **Goal:** Position 3 (+10)
+- **Challenge:** Navigate from left to right
+
+### 2. Goal on Left ⚡
+- **Goal:** Position 0 (+10)
+- **Challenge:** Navigate from right to left
+
+### 3. Middle Treasure 💎
+- **Rewards:** Position 1 (+5), Position 3 (+10)
+- **Challenge:** Decide whether to collect treasure first
+
+### 4. Avoid Hazard ☠️
+- **Goal:** Position 3 (+10)
+- **Hazard:** Position 2 (-8)
+- **Challenge:** High penalty zone - risk vs. reward
+
+### 5. Two Goals 🎯
+- **Rewards:** Position 0 (+3), Position 3 (+10)
+- **Challenge:** Choose between nearby small reward or distant large reward
+
+### 6. Expensive Path 💰
+- **Goal:** Position 3 (+10)
+- **Cost:** Position 2 (-5)
+- **Challenge:** Expensive intermediate state affects optimal policy
+
+## 🛠️ Technologies
+
+### Frontend
+- **React 18** - UI framework
+- **Tailwind CSS** - Styling
+- **Lucide React** - Icons
+- **JavaScript ES6+** - Core language
+
+### Backend/Algorithm
+- **Python 3** - Algorithm implementation
+- **NumPy** - Numerical computations
+- **Jupyter** - Interactive notebooks
+
+## 📊 Performance Metrics
+
+The application tracks:
+- **Steps Taken** - Number of moves to reach goal
+- **Total Reward** - Cumulative reward collected
+- **Stuck Count** - Times robot failed to move (20% probability)
+- **Convergence Time** - Algorithm computation time in milliseconds
+- **Iterations** - Number of iterations until convergence
+
+## 🤝 Contributing
+
+Contributions are welcome! Feel free to:
+- Report bugs
+- Suggest new scenarios
+- Improve algorithms
+- Enhance UI/UX
+
+## 📝 License
+
+This project is licensed under the MIT License.
+
+## 👨‍💻 Author
+
+Created as an educational tool for understanding Markov Decision Processes and Reinforcement Learning fundamentals.
+
+## 📚 References
+
+- Sutton, R. S., & Barto, A. G. (2018). *Reinforcement Learning: An Introduction*
+- Bellman, R. (1957). *Dynamic Programming*
+- Russell, S., & Norvig, P. (2020). *Artificial Intelligence: A Modern Approach*
+
+## 🎓 Educational Use
+
+This project is ideal for:
+- Computer Science students learning RL
+- AI/ML course demonstrations
+- Self-study and experimentation
+- Teaching MDP concepts interactively
+
+---
+
+**⭐ If you find this project helpful, please star the repository!**
+
+## 🐛 Known Issues
+
+- None currently reported
+
+## 🔮 Future Enhancements
+
+- [ ] Add Q-Learning visualization
+- [ ] Implement SARSA algorithm
+- [ ] 2D grid world environment
+- [ ] Policy gradient methods
+- [ ] Deep Q-Network (DQN) comparison
+- [ ] Export simulation data
+
+---
+
+**Made with ❤️ for Reinforcement Learning Education**
